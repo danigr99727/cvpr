@@ -32,4 +32,6 @@ end
 
 [~,~,V] = svd(A)
 
-h = V(1:end,end) / V(end,end)
+h = (V(1:end,end) / V(end,end))';
+
+H = [h(1:3); h(4:6); h(7:9)]
