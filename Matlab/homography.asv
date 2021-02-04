@@ -22,12 +22,8 @@ xy = [x, y];
 A = []
 for 1:size(xy,1)
     [x1, x2, y1, y2] = xy(1,1:end);
-    a_x = [-x1, -y1, -1, 0, 0, 0, x2*x1, x2*y1, x2];
-    a_y = [0, 0, 0, -x1, -y1, -1, y2*x1, y2*y1, y2];
+    a_x = [-x1; -y1; -1; 0; 0; 0; x2*x1; x2*y1; x2];
+    a_y = [0; 0; 0; -x1; -y1; -1; y2*x1; y2*y1; y2];
     
-    A = [A; a_x; a_y];
+    A = [A; a_x
 end
-
-[~,~,V] = svd(A)
-
-h = V(1:end,end) / V(end,end)
