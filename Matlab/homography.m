@@ -17,11 +17,13 @@ matchedPoints2 = valid_points2(indexPairs(:,2),:);
 
 y = matchedPoints2.Location;
 x = matchedPoints1.Location;
-xy = [x, y];
 
 A = []
-for 1:size(xy,1)
-    [x1, x2, y1, y2] = xy(1,1:end);
+for i=1:size(xy,1)
+    x1 = x(i,1);
+    x2 = x(i,2);
+    y1 = y(i,1);
+    y2 = y(i,2);
     a_x = [-x1, -y1, -1, 0, 0, 0, x2*x1, x2*y1, x2];
     a_y = [0, 0, 0, -x1, -y1, -1, y2*x1, y2*y1, y2];
     
