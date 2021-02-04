@@ -13,7 +13,8 @@ indexPairs = matchFeatures(features1,features2);
 
 matchedPoints1 = valid_points1(indexPairs(:,1),:);
 matchedPoints2 = valid_points2(indexPairs(:,2),:);
-%matchedP
+
+figure; showMatchedFeatures(I1,I2,matchedPoints1,matchedPoints2,'montage');
 
 y = matchedPoints2.Location;
 x = matchedPoints1.Location;
