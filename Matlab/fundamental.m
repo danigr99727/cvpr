@@ -44,11 +44,17 @@ h = (V(1:end,end) / V(end,end))';
 
 F = [h(1:3); h(4:6); h(7:9)]
 
-[~,~,V_F] = svd(F)
+%F_auto = estimateFundamentalMatrix(y,x)
 
-e = (V_F(1:end,end) / V_F(end,end))';
+%[~,~,V_F] = svd(F' * F)
 
-epipolarLine = @(x, pt) e(2)+(pt(2)-e(2))/(pt(1)-e(1))*(x-e(1));
+%e = (V_F(1:end,end) / V_F(end,end))';
+
+epipolarLineParams = @(x, y) F * [x; y; 1];
+
+epipolarY = @(x, ptx, pty) [-x, 0, -1] * epipolarLineParams(ptx, pty) / ([0,1,0]*epipolarLineParams(ptx, pty));
+                        
+epipolarLine = @(X, ptx, pty) [epipolarY(X(1),ptx,pty),epipolarY(X(2),ptx,pty)];
 
 fig1 = figure;
 a = axes;
@@ -62,9 +68,6 @@ hold on;
 for i=1:size(x,1)
     col = colours(rem(i,length(colours))+1);
     plot(x(i,1),x(i,2),'Marker','+','Color',col, 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
-    X = [0 4032];
-    Y = [epipolarLine(0, x(i,:)), epipolarLine(4032, x(i,:))];
-    plot(X,Y,'Color',col,'Parent',a);
 end
 hold off;
 
@@ -73,6 +76,9 @@ hold on;
 for i=1:size(x,1)
     col = colours(rem(i,length(colours))+1);
     plot(y(i,1),y(i,2),'Marker','+','Color',col,'MarkerSize', 10, 'LineWidth', 1, 'Parent', a2);
+    X = [0 4032];
+    Y = epipolarLine(X, x(i,1), x(i,2));
+    plot(X,Y,'Color',col,'Parent',a2);
 end
 hold off;
 
