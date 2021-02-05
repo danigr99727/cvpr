@@ -1,5 +1,5 @@
-I1 = rgb2gray(imread('20210204_160141.jpg'));
-I2 = rgb2gray(imread('20210204_160143.jpg'));
+I1 = rgb2gray(imread('20210204_160314.jpg'));
+I2 = rgb2gray(imread('20210204_160339.jpg'));
 
 %points1 = detectHarrisFeatures(I1);
 %points2 = detectHarrisFeatures(I2);
@@ -14,17 +14,18 @@ I2 = rgb2gray(imread('20210204_160143.jpg'));
 %matchedPoints1 = valid_points1(indexPairs(:,1),:);
 %matchedPoints2 = valid_points2(indexPairs(:,2),:);
 
-%Points were obtained manually
+
 
 %figure; showMatchedFeatures(I1,I2,matchedPoints1,matchedPoints2,'montage');
 
 %y = matchedPoints2.Location;
 %x = matchedPoints1.Location;
 
-x = load('savePointsA.mat');
-x = x.fixedPoints
-y = load('savePointsB.mat');
-y = y.movingPoints
+%Points were obtained manually
+x = load('savePointsAHG.mat');
+x = x.fixedPointsHG
+y = load('savePointsBHG.mat');
+y = y.movingPointsHG
 
 A = []
 for i=1:size(x,1)
@@ -32,34 +33,34 @@ for i=1:size(x,1)
     x2 = x(i,2);
     y1 = y(i,1);
     y2 = y(i,2);
-    a_x = [-x1, -y1, -1, 0, 0, 0, x2*x1, x2*y1, x2];
-    a_y = [0, 0, 0, -x1, -y1, -1, y2*x1, y2*y1, y2];
+    a_x = [-x1, -x2, -1, 0, 0, 0, y1*x1, y1*x2, y1];
+    a_y = [0, 0, 0, -x1, -x2, -1, y2*x1, y2*x2, y2];
     
     A = [A; a_x; a_y];
 end
 
-[~,~,V] = svd(A)
+[~,~,V] = svd(A' * A);
 
 h = (V(1:end,end) / V(end,end))';
 
 H = [h(1:3); h(4:6); h(7:9)]
 
-transformed_x = H * [x, ones(size(x,1),1)]';
-transformed_x = transformed_x(1:2,:)';
+trans_x = H * [x, ones(size(x,1),1)]';
+zs = [trans_x(3,:);trans_x(3,:)];
+t_x = trans_x(1:2,:)' ./ zs';
 
-figure(1);
-imshow(I2);
+fig1 = figure;
+a = axes;
+fig2 = figure;
+a2 = axes;
+
+imshow(I2, 'Parent', a);
 hold on;
-figure(1);
-plot(x(:,1),x(:,2),'y+', 'MarkerSize', 10, 'LineWidth', 1);
+plot(x(:,1),x(:,2),'y+', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
 hold off;
 
-figure(2);
-imshow(I1);
+imshow(I1, 'Parent', a2);
 hold on;
-figure(2);
-plot(y(:,1),y(:,2),'y+', 'MarkerSize', 10, 'LineWidth', 1);
-hold on;
-figure(2);
-plot(transformed_x(:,1),transformed_x(:,2),'r+', 'MarkerSize', 10, 'LineWidth', 1);
-holf off;
+plot(y(:,1),y(:,2),'y+', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a2);
+plot(t_x(:,1),t_x(:,2),'r+', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a2);
+hold off;
