@@ -1,3 +1,5 @@
+clear all;
+
 %Pictures changing camera position
 %I1 = rgb2gray(imread('20210204_160141.jpg'));
 %I2 = rgb2gray(imread('20210204_160143.jpg'));
