@@ -22,12 +22,10 @@ I2 = rgb2gray(imread('20210204_160143.jpg'));
 %x = matchedPoints1.Location;
 
 x = load('savePointsA.mat');
-x = x.fixedPoints
 y = load('savePointsB.mat');
-y = y.movingPoints
 
 A = []
-for i=1:size(x,1)
+for i=1:size(xy,1)
     x1 = x(i,1);
     x2 = x(i,2);
     y1 = y(i,1);
@@ -45,21 +43,7 @@ h = (V(1:end,end) / V(end,end))';
 H = [h(1:3); h(4:6); h(7:9)]
 
 transformed_x = H * [x, ones(size(x,1),1)]';
-transformed_x = transformed_x(1:2,:)';
 
-figure(1);
-imshow(I2);
-hold on;
-figure(1);
-plot(x(:,1),x(:,2),'y+', 'MarkerSize', 10, 'LineWidth', 1);
-hold off;
-
-figure(2);
+figure;
 imshow(I1);
-hold on;
-figure(2);
-plot(y(:,1),y(:,2),'y+', 'MarkerSize', 10, 'LineWidth', 1);
-hold on;
-figure(2);
-plot(transformed_x(:,1),transformed_x(:,2),'r+', 'MarkerSize', 10, 'LineWidth', 1);
-holf off;
+imshow(I2
