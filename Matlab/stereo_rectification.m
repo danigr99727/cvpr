@@ -1,9 +1,9 @@
 clear all;
 
-%imageDir = fullfile(toolboxdir('vision'),'visiondata', ...
+%imageDir = fullfile(toolboxdir('vision'),'StereoImages', ...
 %    'calibration','stereo');
-rightImages = imageDatastore('20210204_160141.jpg');
-leftImages = imageDatastore('20210204_160143.jpg');
+%rightImages = imageDatastore(fullfile(imageDir,'right'));
+%leftImages = imageDatastore(fullfile(imageDir,'left')');
 
 boardSize = [8,7];
 
