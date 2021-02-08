@@ -58,8 +58,6 @@ epipolarLine = @(X, ptx, pty) [epipolarY(X(1),ptx,pty),epipolarY(X(2),ptx,pty)];
 
 fig1 = figure;
 a = axes;
-fig2 = figure;
-a2 = axes;
 
 colours = ['y','m','c','r','g','b','w','k']
 
@@ -70,6 +68,9 @@ for i=1:size(x,1)
     plot(x(i,1),x(i,2),'Marker','+','Color',col, 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
 end
 hold off;
+
+fig2 = figure;
+a2 = axes;
 
 imshow(I1, 'Parent', a2);
 hold on;

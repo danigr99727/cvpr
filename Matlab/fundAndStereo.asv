@@ -22,13 +22,11 @@ I2 = rgb2gray(imread('StereoImages/right_ori/r1.jpg'));
 %x = matchedPoints1.Location;
 
 %Points were obtained manually
-reflectionCentre = [ones(14,1) * 4033, ones(14,1) * 3025];
 x = load('leftStereo.mat');
 x = x.leftStereo
-x = reflectionCentre - x;
+x
 y = load('rightStereo.mat');
 y = y.rightStereo
-y = reflectionCentre - y;
 
 A = []
 for i=1:size(x,1)
@@ -61,6 +59,8 @@ epipolarLine = @(X, ptx, pty) [epipolarY(X(1),ptx,pty),epipolarY(X(2),ptx,pty)];
 
 fig1 = figure;
 a = axes;
+fig2 = figure;
+a2 = axes;
 
 colours = ['y','m','c','r','g','b','w','k']
 
@@ -68,13 +68,9 @@ imshow(I2, 'Parent', a);
 hold on;
 for i=1:size(x,1)
     col = colours(rem(i,length(colours))+1);
-    %plot(x(i,1),x(i,2),'Marker','+','Color',col, 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
+    plot(x(i,1),x(i,2),'Marker','+','Color',col, 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
 end
 hold off;
-
-
-fig2 = figure;
-a2 = axes;
 
 imshow(I1, 'Parent', a2);
 hold on;
