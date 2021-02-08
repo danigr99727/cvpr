@@ -38,8 +38,8 @@ v1x = (lines(2,2)-lines(1,2))/(lines(1,1)-lines(2,1));
 v1y = lines(1,1)*v1x + lines(1,2);
 v2x = (lines(4,2)-lines(3,2))/(lines(3,1)-lines(4,1));
 v2y = lines(3,1)*v2x + lines(3,2);
-plot(v1x+padX,padY+v1y,'Marker','+','Color','w', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
-plot(v2x+padX,padY+v2y,'Marker','+','Color','w', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a);
+plot(v1x+padX,padY+v1y,'Marker','+','Color','w', 'MarkerSize', 30, 'LineWidth', 1, 'Parent', a);
+plot(v2x+padX,padY+v2y,'Marker','+','Color','w', 'MarkerSize', 30, 'LineWidth', 1, 'Parent', a);
 
 h_par = [(v2y-v1y)/(v2x-v1x); v2y - (v2y-v1y)/(v2x-v1x)*v2x];
 Y = polyval(h_par,X);
@@ -68,8 +68,8 @@ v1x = (lines(2,2)-lines(1,2))/(lines(1,1)-lines(2,1));
 v1y = lines(1,1)*v1x + lines(1,2);
 v2x = (lines(4,2)-lines(3,2))/(lines(3,1)-lines(4,1));
 v2y = lines(3,1)*v2x + lines(3,2);
-plot(v1x+padX,padY+v1y,'Marker','+','Color','w', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a2);
-plot(v2x+padX,padY+v2y,'Marker','+','Color','w', 'MarkerSize', 10, 'LineWidth', 1, 'Parent', a2);
+plot(v1x+padX,padY+v1y,'Marker','+','Color','w', 'MarkerSize', 30, 'LineWidth', 1, 'Parent', a2);
+plot(v2x+padX,padY+v2y,'Marker','+','Color','w', 'MarkerSize', 30, 'LineWidth', 1, 'Parent', a2);
 
 h_par = [(v2y-v1y)/(v2x-v1x); v2y - (v2y-v1y)/(v2x-v1x)*v2x];
 Y = polyval(h_par,X);
