@@ -34,6 +34,8 @@ I1 = imread(imageFileNames1{1});
     'InitialIntrinsicMatrix', [], 'InitialRadialDistortion', [], ...
     'ImageSize', [mrows, ncols]);
 
+save('stereoParams.mat','stereoParams');
+
 % View reprojection errors
 h1=figure; showReprojectionErrors(stereoParams);
 

@@ -1,5 +1,8 @@
 clear all;
 
+col2 = imread('StereoImages/left_ori/l5.jpg');
+col1 = imread('StereoImages/right_ori/r5.jpg');
+
 I2 = rgb2gray(imread('StereoImages/left_ori/l5.jpg'));
 I1 = rgb2gray(imread('StereoImages/right_ori/r5.jpg'));
 
@@ -52,3 +55,47 @@ for i=1:size(x,1)
 end
 hold off;
 
+
+%% rectify 
+
+stereoParams = load('stereoParams.mat');
+stereoParams = stereoParams.stereoParams;
+
+%tmp = getframe(fig1);
+%[i1, Map] = frame2im(tmp);
+%tmp = getframe(fig2);
+%[i2, Map] = frame2im(tmp);
+
+[J1, J2] = rectifyStereoImages(I2, I1, stereoParams,'OutputView','Full');
+
+fig3 = figure;
+a3 = axes;
+imshow(J1, 'Parent', a3);
+
+fig45 = figure;
+a4 = axes;
+imshow(J2, 'Parent', a4);
+
+%% compute disparity
+    
+disparityMap = disparitySGM(J1, J2);
+figure;
+imshow(disparityMap, [0, 64]);
+title('Disparity Map');
+colormap jet
+colorbar
+
+%% reconstruct 3D
+
+points3D = reconstructScene(disparityMap, stereoParams);
+
+% Convert to meters and create a pointCloud object
+points3D = points3D ./ 1000;
+ptCloud = pointCloud(points3D);
+
+% Create a streaming point cloud viewer
+player3D = pcplayer([-3, 3], [-3, 3], [0, 8], 'VerticalAxis', 'y', ...
+    'VerticalAxisDir', 'down');
+
+% Visualize the point cloud
+view(player3D, ptCloud);
