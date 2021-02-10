@@ -7,13 +7,13 @@ clear all;
 %I1 = rgb2gray(imread('20210204_160314.jpg'));
 %I2 = rgb2gray(imread('20210204_160339.jpg'));
 %Change scale
-I1 = rgb2gray(imread('StereoImages/left_ori/l5.jpg'));
-I2 = rgb2gray(imread('StereoImages/right_ori/r5.jpg'));
+I1 = rgb2gray(imread('/StereoImages/left_ori/l5.jpg'));
+I2 = rgb2gray(imread('/StereoImages/right_ori/r5.jpg'));
 
-%points1 = detectHarrisFeatures(I1);
-%points2 = detectHarrisFeatures(I2);
-points1 = detectSURFFeatures(I1);
-points2 = detectSURFFeatures(I2);
+points1 = detectHarrisFeatures(I1);
+points2 = detectHarrisFeatures(I2);
+%points1 = detectSURFFeatures(I1);
+%points2 = detectSURFFeatures(I2);
 
 [features1,valid_points1] = extractFeatures(I1,points1);
 [features2,valid_points2] = extractFeatures(I2,points2);

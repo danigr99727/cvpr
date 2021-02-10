@@ -1,24 +1,25 @@
-clear all;
+clear all
+close all
 
-col2 = imread('StereoImages/left_ori/l5.jpg');
-col1 = imread('StereoImages/right_ori/r5.jpg');
+I1 = rgb2gray(imread('StereoImages/left_ori/l5.jpg'));
+I2 = rgb2gray(imread('StereoImages/right_ori/r5.jpg'));
 
-I2 = rgb2gray(imread('StereoImages/left_ori/l5.jpg'));
-I1 = rgb2gray(imread('StereoImages/right_ori/r5.jpg'));
+I1 = (I1);
+I2 = (I2);
 
 %Points were obtained manually
-reflectionCentre = [ones(14,1) * 4033, ones(14,1) * 3025];
-x = load('r5.mat');
-x = x.r5
+reflectionCentre = ([ones(14,1) * 4033, ones(14,1) * 3025]);
+x = load('l5.mat');
+x = x.l5;
 %x = reflectionCentre - x;
-y = load('l5.mat');
-y = y.l5
+y = load('r5.mat');
+y = y.r5;
 %y = reflectionCentre - y;
 
 
 %F = getFundamental(x, y);
 
-F = estimateFundamentalMatrix(x,y)
+F = estimateFundamentalMatrix(x,y);
 
 epipolarLineParams = @(x, y) F * [x; y; 1];
 
@@ -58,16 +59,38 @@ hold off;
 
 %% rectify 
 
-stereoParams = load('stereoParams.mat');
-stereoParams = stereoParams.stereoParams;
+%stereoParams = load('stereoParams.mat');
+%stereoParams = stereoParams.stereoParams;
 
 %tmp = getframe(fig1);
 %[i1, Map] = frame2im(tmp);
 %tmp = getframe(fig2);
 %[i2, Map] = frame2im(tmp);
 
-[J1, J2] = rectifyStereoImages(I2, I1, stereoParams,'OutputView','Full');
+%[J1, J2] = rectifyStereoImages(I1, I2, stereoParams,'OutputView','Full');
 
+%detecting orb features
+
+points1 = detectORBFeatures(I1);
+points2 = detectORBFeatures(I2);
+
+[features1,valid_points1] = extractFeatures(I1,points1);
+[features2,valid_points2] = extractFeatures(I2,points2);
+
+indexPairs = matchFeatures(features1,features2);%,'MaxRatio',0.4);
+
+matchedPoints1 = valid_points1(indexPairs(:,1),:);
+matchedPoints2 = valid_points2(indexPairs(:,2),:);
+
+matchedPoints1 = cat(1, matchedPoints1.Location, x);
+matchedPoints2 = cat(1, matchedPoints2.Location, y);
+
+figure; showMatchedFeatures(I1,I2,matchedPoints1,matchedPoints2,'montage');
+
+
+showMatchedFeatures(I1, I2,matchedPoints1,matchedPoints2,'montage');
+[T1, T2] = estimateUncalibratedRectification(F, matchedPoints1, matchedPoints2, size(I2));
+[J1, J2] = rectifyStereoImages(I1, I2, T1, T2);
 fig3 = figure;
 a3 = axes;
 imshow(J1, 'Parent', a3);
@@ -87,15 +110,15 @@ colorbar
 
 %% reconstruct 3D
 
-points3D = reconstructScene(disparityMap, stereoParams);
+%points3D = reconstructScene(disparityMap, stereoParams);
 
 % Convert to meters and create a pointCloud object
 points3D = points3D ./ 1000;
-ptCloud = pointCloud(points3D);
+%ptCloud = pointCloud(points3D);
 
 % Create a streaming point cloud viewer
-player3D = pcplayer([-3, 3], [-3, 3], [0, 8], 'VerticalAxis', 'y', ...
-    'VerticalAxisDir', 'down');
+%player3D = pcplayer([-3, 3], [-3, 3], [0, 8], 'VerticalAxis', 'y', ...
+%    'VerticalAxisDir', 'down');
 
 % Visualize the point cloud
-view(player3D, ptCloud);
+%view(player3D, ptCloud);
