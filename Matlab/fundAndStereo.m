@@ -3,8 +3,8 @@ clear all;
 col2 = imread('StereoImages/left_ori/l5.jpg');
 col1 = imread('StereoImages/right_ori/r5.jpg');
 
-I2 = rgb2gray(imread('StereoImages/left_ori/l5.jpg'));
-I1 = rgb2gray(imread('StereoImages/right_ori/r5.jpg'));
+I2 = rgb2gray(col2);
+I1 = rgb2gray(col1);
 
 %Points were obtained manually
 reflectionCentre = [ones(14,1) * 4033, ones(14,1) * 3025];
