@@ -3,7 +3,6 @@ close all
 
 %openExample('vision/StructureFromMotionFromMultipleViewsExample')
 
-
 imageDir = fullfile("sfmData");
 imds = imageDatastore(imageDir);
 
